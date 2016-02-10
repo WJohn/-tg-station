@@ -506,6 +506,11 @@ var/global/list/rockTurfEdgeCache
 	var/turf_type = /turf/simulated/floor/plating/asteroid //Because caves do whacky shit to revert to normal
 	var/dug = 0       //0 = has not yet been dug, 1 = has already been dug
 
+/turf/simulated/floor/plating/asteroid/coldair
+	name = "sand"
+	baseturf = /turf/simulated/floor/plating/asteroid/coldair
+	temperature = 120
+
 /turf/simulated/floor/plating/asteroid/airless
 	oxygen = 0.01
 	nitrogen = 0.01
