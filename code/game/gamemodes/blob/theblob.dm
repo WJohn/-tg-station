@@ -103,7 +103,7 @@
 	if(expand_range)
 		src.expand()
 		for(var/obj/effect/blob/B in orange(expand_range, src))
-			if(prob(12))
+			if(prob(max(13 - get_dist(get_turf(src), get_turf(B)) * 4, 1))) //expand falls off with range but is faster near the blob causing the expansion
 				B.expand()
 	return
 
@@ -121,9 +121,7 @@
 		A.blob_act()
 
 
-/obj/effect/blob/proc/expand(turf/T = null, prob = 1, controller = null)
-	if(prob && !prob(health))
-		return
+/obj/effect/blob/proc/expand(turf/T = null, controller = null)
 	if(!T)
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -173,7 +171,7 @@
 			B.loc = T
 			B.update_icon()
 			if(B.overmind)
-				B.overmind.blob_reagent_datum.expand_reaction(B, T)
+				B.overmind.blob_reagent_datum.expand_reaction(src, B, T)
 			return B
 		else
 			T.blob_act() //if we can't move in hit the turf again
