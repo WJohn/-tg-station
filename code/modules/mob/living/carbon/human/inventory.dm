@@ -72,9 +72,9 @@
 			glasses = I
 			var/obj/item/clothing/glasses/G = I
 			if(G.tint)
-				update_tinttotal()
+				update_tint()
 			if(G.vision_correction)
-				update_vision_overlays()
+				clear_fullscreen("nearsighted")
 			if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view)
 				update_sight()
 			update_inv_glasses()
@@ -136,9 +136,10 @@
 		glasses = null
 		var/obj/item/clothing/glasses/G = I
 		if(G.tint)
-			update_tinttotal()
+			update_tint()
 		if(G.vision_correction)
-			update_vision_overlays()
+			if(disabilities & NEARSIGHT)
+				overlay_fullscreen("nearsighted", /obj/screen/fullscreen/impaired, 1)
 		if(G.vision_flags || G.darkness_view || G.invis_override || G.invis_view)
 			update_sight()
 		update_inv_glasses()
@@ -165,17 +166,19 @@
 		s_store = null
 		update_inv_s_store()
 
-/mob/living/carbon/human/wear_mask_update(obj/item/clothing/C, unequip = 1)
-	if(C.flags & BLOCKHAIR)
+/mob/living/carbon/human/wear_mask_update(obj/item/clothing/C, toggle_off = 1)
+	if((C.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(C.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
 		update_hair()
-	if(unequip && internal)
+	if(toggle_off && internal)
 		update_internals_hud_icon(0)
 		internal = null
+	if(C.flags_inv & HIDEEYES)
+		update_inv_glasses()
 	sec_hud_set_security_status()
 	..()
 
 /mob/living/carbon/human/head_update(obj/item/I, forced)
-	if(I.flags & BLOCKHAIR || forced)
+	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || forced)
 		update_hair()
 	if(I.flags_inv & HIDEEYES || forced)
 		update_inv_glasses()

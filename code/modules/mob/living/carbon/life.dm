@@ -198,15 +198,10 @@
 	if(internal)
 		if (!contents.Find(internal))
 			internal = null
-		if (!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
-			internal = null
-		if(internal)
+			update_internals_hud_icon(0)
+		else
 			update_internals_hud_icon(1)
 			return internal.remove_air_volume(volume_needed)
-		else
-			update_internals_hud_icon(0)
-	return
-
 
 /mob/living/carbon/proc/handle_changeling()
 	if(mind && hud_used)
@@ -266,7 +261,6 @@
 				adjustToxLoss(3)
 			else
 				radiation = Clamp(radiation, 0, 100)
-
 
 /mob/living/carbon/handle_chemicals_in_body()
 	if(reagents)
@@ -344,7 +338,7 @@
 
 	if(drowsyness)
 		drowsyness = max(drowsyness - restingpwr, 0)
-		set_blurriness(max(2, eye_blurry))
+		blur_eyes(2)
 		if(prob(5))
 			AdjustSleeping(1)
 			Paralyse(5)

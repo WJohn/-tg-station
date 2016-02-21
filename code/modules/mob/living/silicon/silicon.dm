@@ -189,7 +189,7 @@
 		if(STUTTER)
 			stuttering = max(stuttering,(effect/(blocked+1)))
 		if(EYE_BLUR)
-			set_blurriness(max(eye_blurry,(effect/(blocked+1))))
+			blur_eyes(effect/(blocked+1))
 		if(DROWSY)
 			drowsyness = max(drowsyness,(effect/(blocked+1)))
 	updatehealth()
@@ -512,7 +512,7 @@
 		weakened = max(amount,0)
 		update_stat()
 
-/mob/living/silicon/AdjustWeakened(amount)
-	if(status_flags & CANWEAKEN)
+/mob/living/silicon/AdjustWeakened(amount, ignore_canweaken = 0)
+	if(status_flags & CANWEAKEN || ignore_canweaken)
 		weakened = max(weakened + amount,0)
 		update_stat()
